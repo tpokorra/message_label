@@ -196,6 +196,14 @@ class message_label extends rcube_plugin {
                             }
                         }
                     }
+
+                    if (stripos($flag, 'labels') === false) {
+                        foreach ($prefs as $key => $p) {
+                            if ($p['text'] == strtolower($flag)) {
+                                array_push($ret_key, array('id' => $key, 'type' => $type));
+                            }
+                        }
+                    }
                 }
 
             //write_log('debug', preg_replace('/\r\n$/', '', print_r($ret_key,true)));
@@ -225,7 +233,23 @@ class message_label extends rcube_plugin {
      */
     function message_label_imap_set() {
         if (($uids = get_input_value('_uid', RCUBE_INPUT_POST)) && ($flag = get_input_value('_flag', RCUBE_INPUT_POST))) {
+            
+            $prefs = $this->rc->config->get('message_label', array());
+            $unsetFlag = "";
+            if (stripos($flag, "UN") === 0) {
+                $flag = substr($flag, 2);
+                $unsetFlag = "UN";
+            }
+            
             $flag = $a_flags_map[$flag] ? $a_flags_map[$flag] : strtoupper($flag);
+            
+            foreach ($prefs as $flagdefinition) {
+                if (strtoupper($flagdefinition['id']) == $flag) {
+                    $flag = strtoupper(str_replace(" ", "_", $flagdefinition['text']));
+                }
+            }
+            $flag = $unsetFlag.$flag;
+            
             $type = get_input_value('_type', RCUBE_INPUT_POST);
             $label_search = get_input_value('_label_search', RCUBE_INPUT_POST);
 
@@ -324,6 +348,7 @@ class message_label extends rcube_plugin {
         $str = '';
         foreach ($prefs as $p) {
             if ($p['id'] == $id) {
+                $labeltext = $p['text'];
                 $str = $p['input'];
                 $filter = 'ALL';
                 $header = $p['header'];
@@ -354,7 +379,7 @@ class message_label extends rcube_plugin {
         if ($use_saved_list && $_SESSION['all_folder_search']['uid_mboxes'])
             $result_h = $this->get_search_result();
         else
-            $result_h = $this->perform_search($search_str, $folders, $id);
+            $result_h = $this->perform_search($search_str, $folders, $id, $labeltext);
 
         $this->rc->output->set_env('label_folder_search_active', 1);
         //$this->rc->imap->page_size = $tmp_page_size;
@@ -398,14 +423,14 @@ class message_label extends rcube_plugin {
      * @return  array    Indexed array with message header objects
      * @access  private
      */
-    private function perform_search($search_string, $folders, $label_id) {
+    private function perform_search($search_string, $folders, $label_id, $label_text) {
         $result_h = array();
         $uid_mboxes = array();
         $id = 1;
         $result = array();
         $result_label = array();
 
-        $search_string_label = 'KEYWORD "$labels_' . $label_id . '"';
+        $search_string_label = 'KEYWORD ' . strtoupper(str_replace(' ', "_", $label_text));
 
         // Search all folders and build a final set
         if ($folders[0] == 'all' || empty($folders))
@@ -512,6 +537,9 @@ class message_label extends rcube_plugin {
             'unflagged' => 'UNFLAGGED');
 
         if (($uids = get_input_value('_uid', RCUBE_INPUT_POST)) && ($flag = get_input_value('_flag', RCUBE_INPUT_POST))) {
+
+            // still TODO support clear-text IMAP flags
+            return;
 
             $flag = $a_flags_map[$flag] ? $a_flags_map[$flag] : strtoupper($flag);
 
@@ -860,8 +888,7 @@ class message_label extends rcube_plugin {
         $prefs = $this->rc->config->get('message_label', array());
         $flags = array();
         foreach ($prefs as $prefs_val) {
-            $flags += array(strtoupper($prefs_val['id']) => '$labels_' . $prefs_val['id']);
-            $flags += array(strtoupper('u' . $prefs_val['id']) => '$ulabels_' . $prefs_val['id']);
+            $flags += array(strtoupper(str_replace(" ", "_", $prefs_val['text'])) => $prefs_val['text']);
         }
         $this->rc->imap->conn->flags = array_merge($this->rc->imap->conn->flags, $flags);
     }
