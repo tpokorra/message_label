@@ -66,20 +66,22 @@ class message_label extends rcube_plugin {
         $page = get_input_value('_page', RCUBE_INPUT_GET);
         $sort = get_input_value('_sort', RCUBE_INPUT_GET);
 
+        $framed = (isset($_REQUEST["_framed"]) && $_REQUEST["_framed"] == "1");
+
         if ($search == 'labelsearch') {
             if (($args['action'] == 'show' || $args['action'] == 'preview') && !empty($uid)) {
                 $uid = $_SESSION['label_folder_search']['uid_mboxes'][$uid]['uid'];
-                $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_uid' => $uid));
+                $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_uid' => $uid, '_framed' => $framed));
             }
             if ($args['action'] == 'compose') {
                 $draft_uid = get_input_value('_draft_uid', RCUBE_INPUT_GET);
                 if (!empty($draft_uid)) {
                     $draft_uid = $_SESSION['label_folder_search']['uid_mboxes'][$draft_uid]['uid'];
-                    $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_draft_uid' => $draft_uid));
+                    $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_draft_uid' => $draft_uid, '_framed' => $framed));
                     $this->rc->output->send();
                 } elseif (!empty($uid)) {
                     $uid = $_SESSION['label_folder_search']['uid_mboxes'][$uid]['uid'];
-                    $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_uid' => $uid));
+                    $this->rc->output->redirect(array('_task' => 'mail', '_action' => $args['action'], '_mbox' => $mbox, '_uid' => $uid, '_framed' => $framed));
                     $this->rc->output->send();
                 }
             }
