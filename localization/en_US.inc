@@ -9,6 +9,8 @@ $labels['label_name'] = 'name';
 $labels['label_folder'] = 'search in ';
 $labels['label_all'] = 'All folder';
 $labels['label_pref'] = 'Management of labels';
+$labels['help_filter_caption'] = "Help";
+$labels['label_help_filter'] = 'You can %ssetup filters%s to mark incoming emails with these labels';
 
 $labels['deleteconfirm'] = 'Do you really want to delete this label?';
 $labels['add_row'] = 'add';
