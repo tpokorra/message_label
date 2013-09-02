@@ -153,7 +153,7 @@ class message_label extends rcube_plugin {
             if (!empty($message->flags)) {
                 foreach ($message->flags as $flag => $set_val) {
                     foreach ($prefs as $key => $p) {
-                        if ($p['text'] == strtolower($flag)) {
+                        if (strtoupper(str_replace(' ', '_', $p['text'])) == $flag) {
                             array_push($ret_key, array('id' => $key, 'type' => 'label'));
                         }
                     }
@@ -199,7 +199,7 @@ class message_label extends rcube_plugin {
                 $unsetFlag = "UN";
             }
 
-            $flag = $a_flags_map[$flag] ? $a_flags_map[$flag] : strtoupper($flag);
+            $flag = $a_flags_map[$flag] ? $a_flags_map[$flag] : strtoupper(str_replace(" ", "_", $flag));
 
             foreach ($prefs as $flagdefinition) {
                 if (strtoupper($flagdefinition['id']) == $flag) {
@@ -644,7 +644,7 @@ class message_label extends rcube_plugin {
         $prefs = $this->rc->config->get('message_label', array());
         $flags = array();
         foreach ($prefs as $prefs_val) {
-            $flags += array(strtoupper(str_replace(" ", "_", $prefs_val['text'])) => $prefs_val['text']);
+            $flags += array(strtoupper(str_replace(" ", "_", $prefs_val['text'])) => str_replace(" ", "_", $prefs_val['text']));
         }
 
         $this->rc->imap->conn->flags = array_merge($this->rc->imap->conn->flags, $flags);
