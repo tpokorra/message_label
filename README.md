@@ -27,7 +27,7 @@ This is plugin for roundcube to add labels like Google labels.
 <h2>Instructions message_label</h2>
 
 Create first label:<br/>
-<img src="01_createFirstLabel.png">
+<img src="doc/01_createFirstLabel.png">
 <br/><br/>
 
 Edit labels:<br/>
