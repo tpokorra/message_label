@@ -377,7 +377,11 @@ class message_label extends rcube_plugin {
         $result = array();
         $result_label = array();
 
+<<<<<<< HEAD
         $search_string_label = 'KEYWORD ' . strtoupper(str_replace(' ', "_", $label_text));
+=======
+        $search_string_label = 'KEYWORD $labels_' . $label_id;
+>>>>>>> acddfe7795e2119e745f744ca14af7bd83caf2ce
 
         // Search all folders and build a final set
         if ($folders[0] == 'all' || empty($folders))
