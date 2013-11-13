@@ -2,6 +2,7 @@ Message label plugin for roundcube
 
 Attention! Latest version plugin use new roundcube class storage and don't work with version < 0.8.
 For version < 0.8 use version plugin (1.0)
+Require managesieve plugin for the filters.
 
 Install
 -------------------------------------------
@@ -21,10 +22,6 @@ This is plugin for roundcube to add labels like Google labels.
 * remove label on one click on label in subject
 * search all labels in all folder on one click (manual select folder search on filter search label) 
 * display label list on left panel under folder list
+* filters implemented with sieve require managesieve plugin to be installed
 
 
-Contact
-----------------------------------------
-Comments and suggestions are welcome.
-
-Email: dns.sobol@gmail.com
