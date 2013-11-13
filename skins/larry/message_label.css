@@ -168,3 +168,7 @@ table.propform input {
 {
   background-color: #FFFFA6;
 }
+
+#sections-table #rcmrowlabel_preferences td.section {
+	background-position: 8px -238px;
+}
