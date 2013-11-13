@@ -31,11 +31,11 @@ Create first label:<br/>
 <br/><br/>
 
 Edit labels:<br/>
-<img src="02_createLabel.png">
+<img src="doc/02_createLabel.png">
 <br/><br/>
 
 Create a filter that sets the label when the email comes in:<br/>
-<img src="03_createFilter.png">
+<img src="doc/03_createFilter.png">
 <br/>
 Note: need to set the w flag for the user in Cyrus for this to work:
 <pre>
@@ -44,7 +44,7 @@ setacl user/max.mustermann@example.org max^mustermann@example.org w
 </pre>
 <br/><br/>
 Manually assign labels:<br/>
-<img src="04_markMessage.png">
+<img src="doc/04_markMessage.png">
 <br/>
 You can either use the Mark drop down menu, or drag the message to the label folder on the left side.<br/>
 For removing a label from a message, you can just click the label in the message list.
